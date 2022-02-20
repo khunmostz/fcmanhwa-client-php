@@ -93,107 +93,115 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Container toonList(Size size, List<dynamic> data) {
-    return Container(
-      width: size.width,
-      height: size.height * 0.9,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
+  Widget toonList(Size size, List<dynamic> data) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(Duration(seconds: 1));
+        setState(() {
+          fetchData();
+        });
+      },
+      child: Container(
+        width: size.width,
+        height: size.height * 0.9,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                child: Text(
-                  "Catoegories",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  child: Text(
+                    "Catoegories",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            categoriesBar(),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: double.infinity,
-              height: size.height * 0.4,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailScreen(
-                                      id: data[index].manhId,
-                                    )),
-                          );
-                        },
-                        child: Container(
-                          clipBehavior: Clip.hardEdge,
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Image.network(
-                            '${data[index].manhUrl}',
-                            width: 200,
-                            height: 260,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '${data[index].manhName}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.clip,
-                        maxLines: 1,
-                        softWrap: false,
-                      ),
-                    ],
-                  );
-                },
+              categoriesBar(),
+              SizedBox(
+                height: 10,
               ),
-            ),
-            Spacer(),
-            footer("ลิสต์ประจำวัน", Icon(Icons.arrow_forward_ios)),
-            SizedBox(
-              height: 10,
-            ),
-            footer("อันดับ", Icon(Icons.arrow_forward_ios)),
-            SizedBox(
-              height: 10,
-            ),
-            footer("ประเภท", Icon(Icons.arrow_forward_ios)),
-            SizedBox(
-              height: 10,
-            ),
-            footer("แฟนคลับแปล", Icon(Icons.arrow_forward_ios)),
-            SizedBox(
-              height: 10,
-            ),
-            footer("ตั้งค่า", Icon(Icons.arrow_forward_ios)),
-          ],
+              Container(
+                width: double.infinity,
+                height: size.height * 0.4,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailScreen(
+                                        id: data[index].manhId,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            margin: EdgeInsets.symmetric(horizontal: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.network(
+                              '${data[index].manhUrl}',
+                              width: 200,
+                              height: 260,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          '${data[index].manhName}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              Spacer(),
+              footer("ลิสต์ประจำวัน", Icon(Icons.arrow_forward_ios)),
+              SizedBox(
+                height: 10,
+              ),
+              footer("อันดับ", Icon(Icons.arrow_forward_ios)),
+              SizedBox(
+                height: 10,
+              ),
+              footer("ประเภท", Icon(Icons.arrow_forward_ios)),
+              SizedBox(
+                height: 10,
+              ),
+              footer("แฟนคลับแปล", Icon(Icons.arrow_forward_ios)),
+              SizedBox(
+                height: 10,
+              ),
+              footer("ตั้งค่า", Icon(Icons.arrow_forward_ios)),
+            ],
+          ),
         ),
       ),
     );

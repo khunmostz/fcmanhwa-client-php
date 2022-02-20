@@ -104,16 +104,21 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "${data[index].cateId} Rating  ${data[index].manhRating}",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "${data[index].cateId} Rating  ${data[index].manhRating}",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
+                            Icon(Icons.star, color: Colors.yellow),
+                          ],
                         ),
                         SizedBox(
                           height: 30,
@@ -139,6 +144,19 @@ class _DetailScreenState extends State<DetailScreen> {
                               fontSize: 18,
                             ),
                             textAlign: TextAlign.start,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "รายการแนะนำ",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -172,22 +190,28 @@ class _DetailScreenState extends State<DetailScreen> {
                                                     )),
                                           );
                                         },
-                                        child: Container(
-                                          width: size.width / 2,
-                                          height: 200,
-                                          clipBehavior: Clip.hardEdge,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Image.network(
-                                            '${rdata[index].manhUrl}',
-                                            // width: 100,
-                                            // height: 100,
-                                            fit: BoxFit.cover,
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                width: size.width / 2,
+                                                height: 300,
+                                                clipBehavior: Clip.hardEdge,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Image.network(
+                                                  '${rdata[index].manhUrl}',
+                                                  // width: 100,
+                                                  // height: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       );
                                     }),
