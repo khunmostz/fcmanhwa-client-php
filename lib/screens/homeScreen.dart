@@ -14,13 +14,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late List<Manhwalist> _manhwalist;
-  late List<Manhwalist> _manhwalistforSearch;
+  TextEditingController _searchController = TextEditingController();
   var selectedCategory = 0;
 
   @override
   void initState() {
     super.initState();
     fetchData();
+    // _manhwalist = _manhwalistforSearch;
   }
 
   Future<List> fetchData() async {
@@ -75,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          searchField(),
+                          searchField(data),
                           SizedBox(
                             height: 20,
                           ),
@@ -94,44 +95,42 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget toonList(Size size, List<dynamic> data) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await Future.delayed(Duration(seconds: 1));
-        setState(() {
-          fetchData();
-        });
-      },
-      child: Container(
-        width: size.width,
-        height: size.height * 0.9,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
+    return Container(
+      width: size.width,
+      height: size.height * 0.9,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  child: Text(
-                    "Catoegories",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                child: Text(
+                  "Catoegories",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              categoriesBar(),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
+            ),
+            categoriesBar(),
+            SizedBox(
+              height: 10,
+            ),
+            RefreshIndicator(
+              onRefresh: () async {
+                await fetchData();
+                setState(() {});
+              },
+              child: Container(
                 width: double.infinity,
                 height: size.height * 0.4,
                 child: ListView.builder(
@@ -182,26 +181,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              Spacer(),
-              footer("ลิสต์ประจำวัน", Icon(Icons.arrow_forward_ios)),
-              SizedBox(
-                height: 10,
-              ),
-              footer("อันดับ", Icon(Icons.arrow_forward_ios)),
-              SizedBox(
-                height: 10,
-              ),
-              footer("ประเภท", Icon(Icons.arrow_forward_ios)),
-              SizedBox(
-                height: 10,
-              ),
-              footer("แฟนคลับแปล", Icon(Icons.arrow_forward_ios)),
-              SizedBox(
-                height: 10,
-              ),
-              footer("ตั้งค่า", Icon(Icons.arrow_forward_ios)),
-            ],
-          ),
+            ),
+            Spacer(),
+            footer("ลิสต์ประจำวัน", Icon(Icons.arrow_forward_ios)),
+            SizedBox(
+              height: 10,
+            ),
+            footer("อันดับ", Icon(Icons.arrow_forward_ios)),
+            SizedBox(
+              height: 10,
+            ),
+            footer("ประเภท", Icon(Icons.arrow_forward_ios)),
+            SizedBox(
+              height: 10,
+            ),
+            footer("แฟนคลับแปล", Icon(Icons.arrow_forward_ios)),
+            SizedBox(
+              height: 10,
+            ),
+            footer("ตั้งค่า", Icon(Icons.arrow_forward_ios)),
+          ],
         ),
       ),
     );
@@ -274,22 +273,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget searchField() {
+  Widget searchField(data) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
-        // onChanged: (text) {
-        //   text = text.toLowerCase();
-        //   setState(() {
-        //     _manhwalist = _manhwalist.where((element) {
-        //       var manhName = element.manhName!.toLowerCase();
-        //       return manhName.contains(text);
-        //     }).toList();
-        //   });
-        // },
+        controller: _searchController,
+        onChanged: (String value) {
+          final suggestion = _manhwalist.where((element) {
+            final manhName = element.manhName!.toLowerCase();
+            final input = value.toLowerCase();
+            return manhName.contains(input);
+          }).toList();
+          setState(() {
+            data = suggestion;
+          });
+        },
         decoration: InputDecoration(
           hintText: "Search",
           prefixIcon: Icon(Icons.search),

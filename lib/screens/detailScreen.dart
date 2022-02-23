@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_client_fcmanhwa/modals/manhwa_list.dart';
 import 'package:flutter_client_fcmanhwa/screens/homeScreen.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_tts/flutter_tts.dart';
 
 class DetailScreen extends StatefulWidget {
   final String id;
@@ -15,6 +16,9 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   late List<Manhwalist> _manhwalist;
+  FlutterTts flutterTts = FlutterTts();
+
+  Future _speak(String text) async {}
 
   @override
   void initState() {
@@ -123,15 +127,30 @@ class _DetailScreenState extends State<DetailScreen> {
                         SizedBox(
                           height: 30,
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "เรื่องย่อ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "เรื่องย่อ",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
+                            RaisedButton(
+                              onPressed: () async {
+                                await flutterTts.setLanguage("th-TH");
+                                // await flutterTts.setPitch(1);
+                                await flutterTts.setSpeechRate(0.5);
+                                await flutterTts.speak(
+                                    "เรื่องย่อt ${data[index].manhDesc}");
+                              },
+                              child: Icon(Icons.mic),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 30,
